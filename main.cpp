@@ -1,113 +1,120 @@
-#include <iostream>
-#include <cstdlib>
-#include <iomanip>
-#include <cstring>
-#include <fstream>
-#include <string> 
-#include <list>
+#include "globals.h"
 
 #define ROW 9
 #define COL 9
 
-// THIS READS ONLY POSITIVE NUMBERS
-// CREATE NOTEPAD FILE
-// E.G. . . . . . . . .
-/* ...|...|.7.
- * ...|.5.|8.1
- * ..6|41.|.35
-
- * 6.7|...|52.
- * ...|2.9|...
- * .41|...|6.9
-
- * 97.|.21|4..
- * 1.5|.3.|...
- * .8.|...|...
- */
- 
-typedef unsigned short int uint16;
-
 class grid
-{
-	public:
-		grid();
-		~grid();
-		void readFile(uint16 board[ROW][COL]);
-		void sortBoard(uint16 board[ROW][COL]);
-		void printBoard(uint16 board[ROW][COL]);
-		
-		int generateNumber();
+{	
+public:
+	grid();
+	~grid();
+	
+	int readFile(int *board);
+	
+//  Algorithm to check tiles
+	bool checkTile(int number);
+	bool checkRow(int *board, int comparison);
+	bool checkCol(int *board, int comparison);
 };
 
-grid::grid(){}
-
-grid::~grid(){}
-
-void grid::readFile(uint16 board[ROW][COL])
+int grid::readFile(int *board)
 {
-	std::string readLine;
+	int msg = 0;
+	char readLine;
 	std::ifstream inFile("sudoku.txt");
-	if(inFile.is_open())
+	if(!inFile)
 	{
-		int tempIndex = 0;
-		while(std::getline(inFile, readLine))
+		std::cout << "File could not be found!\n";
+		std::cout << "Try creating a sudoku.txt file first.\n";
+		msg = -1;
+	}
+	else
+	{
+		while(std::getline(inFile, readLine)
 		{
-			std::cout << readLine << std::endl;
+//			Print output to see if it is being read correctly first
+			std::cout << readLine << "\n";
 		}
 	}
 	
+	return msg;
 }
 
-void grid::sortBoard(uint16 board[ROW][COL])
+bool grid::checkTile(int number)
 {
-	int tempX = 0;
-	int tempY = 0;
-	for(int x = tempX; x < ROW; x++)
+	bool isEmpty;
+	
+	if(number == 0)
+		isEmpty = true;
+	else
+		isEmpty = false;
+	
+	return isEmpty;
+}
+
+bool grid::checkRow(int *board, int comparison, int y)
+{
+//  If flag equals false
+//  then, the comparison 
+//  cannot exist in same row
+	bool flag;
+	for(int x = 0; x < ROW; x++)
 	{
-		if(x == ROW - 1)
+		if(flag == false)
 		{
-			for(int y = tempY; y < COL; y++)
+			break;
+		}
+		else
+		{		
+			if(board[x][y] == comparison)
+			{	
+				flag = false;
+			}
+			else
 			{
-				// ALGORITHM CHECK
-				if(board[x][y] == 0)
-				{
-					board[x][y] = generateNumber();
-				}
+				flag = true;
 			}
 		}
 	}
+	
+	return flag;
 }
 
-void grid::printBoard(uint16 board[ROW][COL])
+bool grid::checkCol(int *board, int comparison, int x)
 {
-	for(int x = 0; x < ROW; x++)
+//  If flag equals false
+//  then, the comparison 
+//  cannot exist in same row
+	bool flag;
+	for(int y = 0; y < COL; y++)
 	{
-		for(int y = 0; y < COL; y++)
+		if(flag == false)
 		{
-			std::cout << board[x][y] << " "; 
+			break;
 		}
-		std::cout << std::endl; 
+		else
+		{		
+			if(board[x][y] == comparison)
+			{	
+				flag = false;
+			}
+			else
+			{
+				flag = true;
+			}
+		}
 	}
-}
-
-int grid::generateNumber(uint16 board[ROW][COL])
-{
-	// Generates a random number between 1 - 9
-	int tempArray[ROW] = {0};
-	uint16 v = (std::rand() % 9) + 1;
-	for(int index = 0; index < ROW; index++)
-	{
-		tempArray[index] = v;
-	}
-		
-	return v;
+	
+	return flag;
 }
 
 int main()
 {
-	grid sudokuTiles;
-	uint16 board[ROW][COL] = {0};
-	sudokuTiles.sortBoard(board);
-	sudokuTiles.printBoard(board);
+//  Initializes 9x9 grid to all zero
+	grid Sudoku;
+	int board[ROW][COL] = {0};
+	
+	Sudoku.readFile(board);
+	
 	return 0;
 }
