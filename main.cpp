@@ -13,8 +13,8 @@ public:
 	
 //  Algorithm to check tiles
 	bool checkTile(int number);
-	bool checkRow(int *board, int comparison);
-	bool checkCol(int *board, int comparison);
+	bool checkRow(int *board, int comparison, int y);
+	bool checkCol(int *board, int comparison, int x);
 };
 
 int grid::readFile(int *board)
@@ -34,6 +34,8 @@ int grid::readFile(int *board)
 		{
 //			Print output to see if it is being read correctly first
 			std::cout << readLine << "\n";
+			
+			std::istringstream iss(readLine);
 		}
 	}
 	
